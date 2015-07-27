@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="web.mapper.auth.authMapper">
+	
+	<resultMap id="userDetailsDTO" type="com.mangosystem.rep.web.auth.UserDetailsDTO">
+		<result property="userId" column="user_id" javaType="string" jdbcType="VARCHAR"/>
+		<result property="userName" column="user_name" javaType="string" jdbcType="VARCHAR"/>
+		<result property="locale" column="locale" javaType="string" jdbcType="VARCHAR"/>
+		<result property="email" column="email" javaType="string" jdbcType="VARCHAR"/>
+		<result property="stated" column="stated" javaType="boolean" jdbcType="BOOLEAN"/>
+		<result property="createDate" column="create_date" javaType="Date" jdbcType="TIMESTAMP"/>
+		<result property="updateDate" column="update_date" javaType="Date" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	
+	<select id="selectPassword" resultType="string">
+		SELECT user_pass AS password FROM ts_users WHERE user_id = #{value}
+	</select>
+	
+	<select id="selectCode" resultType="int">
+		SELECT user_idx FROM ts_users WHERE user_id = #{value}
+	</select>
+	
+	<select id="selectId" resultType="string">
+		SELECT user_id FROM ts_users WHERE user_idx = ${value}
+	</select>
+	
+	<select id="selectIdentify" parameterType="string" resultMap="userDetailsDTO">
+		SELECT 
+			user_id, user_name, locale, email, stated, create_date, update_date 
+		FROM ts_users 
+		WHERE user_id = #{value}
+	</select>
+	
+	<select id="selectAuthority" parameterType="string" resultType="hashmap">
+		SELECT 
+			u1.user_id, r1.authority, u1.stated 
+		FROM ts_users u1, ts_users_roles r1
+		WHERE u1.user_idx = r1.user_idx AND u1.user_id = #{value}
+	</select>
+	
+	<select id="selectUserList" resultMap="userDetailsDTO">
+		SELECT 
+			user_id, user_name, locale, email, stated, create_date, update_date 
+		FROM ts_users
+	</select>
+	
+</mapper>
