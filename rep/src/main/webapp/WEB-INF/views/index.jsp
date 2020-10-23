@@ -140,7 +140,7 @@
 		var tmsSrcSat			= "<%=tmsSrcSat%>";
 		var tmsSrcBase			= "<%=tmsSrcBase%>";
 
-        var url = webProxy + encodeURIComponent('http://127.0.0.1:8080/geoserver/wps');
+        var url = webProxy + encodeURIComponent('http://127.0.0.1:18080/geoserver/wps');
         var wpsclient = new wps.client({
           servers: {
             'wpsgui': url

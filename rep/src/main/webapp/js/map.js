@@ -53,7 +53,7 @@ var olLayers = [
 			layers : [ new ol.layer.Tile({
 				title : 'cite:sid',
 				source : new ol.source.TileWMS({
-					url : "http://127.0.0.1:8080/geoserver/wms",
+					url : "http://127.0.0.1:18080/geoserver/wms",
 					params : {
 						'TILED' : 'true',
 						'VERSION' : '1.1.0',

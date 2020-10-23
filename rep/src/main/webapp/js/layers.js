@@ -35,7 +35,7 @@ function createWMSLayer(source, title, styles, baseLayer, visible, tile) {
 	type: baseLayer ? 'base' : '',
 	visible : visible,
     source: new ol.source.TileWMS({
-    url: "http://127.0.0.1:8080/geoserver/wms",
+    url: "http://127.0.0.1:18080/geoserver/wms",
     params: {
       'TILED': tile,
       'VERSION': '1.1.0',

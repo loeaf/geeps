@@ -18,10 +18,8 @@ import javax.crypto.spec.DESKeySpec;
 import javax.crypto.spec.DESedeKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
-
 import com.mangosystem.rep.util.ByteUtil;
+import org.apache.xmlbeans.impl.util.Base64;
 
 public class Crypto {
 	
@@ -185,9 +183,13 @@ public class Crypto {
 			cipher.init(Cipher.ENCRYPT_MODE, keySpec);
 			
 			byte[] encrypt = cipher.doFinal( plainText.getBytes() );
-			
+
+			/**
+			 * @autho dhkim
+			 * sun lib을 apache lib으로 변경
+			 */
 			if (base64)
-				return new BASE64Encoder().encode(encrypt);
+				return new String(Base64.encode(encrypt));
 			else 
 				return ByteUtil.toHexStringFromBytes(encrypt);
 		} catch(Exception e) {
@@ -213,12 +215,17 @@ public class Crypto {
 			cipher.init(Cipher.DECRYPT_MODE, key );
 			
 			byte[] decrypt = null;
-			
+
+//			if (base64)
+//				decrypt = cipher.doFinal( new BASE64Decoder().decodeBuffer(encryptCode) );
+//			else
+//				decrypt = cipher.doFinal( ByteUtil.toBytesFromHexString(encryptCode) );
+
 			if (base64)
-				decrypt = cipher.doFinal( new BASE64Decoder().decodeBuffer(encryptCode) );
+				decrypt = cipher.doFinal(Base64.decode(encryptCode.getBytes()));
 			else
 				decrypt = cipher.doFinal( ByteUtil.toBytesFromHexString(encryptCode) );
-			
+
 			return new String(decrypt);
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -265,14 +272,4 @@ public class Crypto {
         }
         return encrypt;
 	}
-	
-	/**
-	 * Encrypt BASE64
-	 * @param value
-	 * @return
-	 */
-	public static String encryptBASE64(String value) {
-		return new BASE64Encoder().encode(value.getBytes());
-	}
-	
 }
